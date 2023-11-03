@@ -1,0 +1,4 @@
+azure_subscription_id             = "your_subscription_id"
+azure_subscription_tenant_id      = "your_tenant_id"
+#azure_service_principal_appid    = "optional_service_principal_appid"
+#azure_service_principal_password = "optional_service_principal_password"
