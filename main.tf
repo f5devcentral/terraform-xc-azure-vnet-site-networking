@@ -225,7 +225,7 @@ resource "azurerm_route_table" "inside" {
   name                          = format("%s-inside-rt-%d", local.vnet_name, count.index)
   location                      = var.location
   resource_group_name           = local.resource_group_name
-  disable_bgp_route_propagation = var.disable_bgp_route_propagation
+  bgp_route_propagation_enabled = var.bgp_route_propagation_enabled
 
   tags = var.tags
 
