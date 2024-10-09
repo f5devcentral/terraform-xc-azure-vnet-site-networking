@@ -16,7 +16,7 @@ locals {
   create_resource_group     = var.create_resource_group
   vnet_name                 = var.name != null ? var.name : format("%s-vnet", random_string.random.result)
   vnet_id                   = var.create_vnet ? azurerm_virtual_network.this[0].id : data.azurerm_virtual_network.this[0].id
-  vnet_cidr                 = var.create_vnet ? azurerm_virtual_network.this[0].address_space[0] : data.azurerm_virtual_network.this[0].address_space[0]
+  vnet_cidr                 = var.create_vnet ? tolist(azurerm_virtual_network.this[0].address_space)[0] : tolist(data.azurerm_virtual_network.this[0].address_space)[0]
   existing_vnet_name        = var.create_vnet ? azurerm_virtual_network.this[0].name : local.vnet_name
   az_names                  = slice(["1","2","3"], 0, max(local.outside_subnets_len, local.local_subnets_len, local.inside_subnets_len))
   americas_tcp_80_443_range = [

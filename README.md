@@ -7,7 +7,7 @@ This Terraform module provisions an Azure VNET that is required for XC Cloud Azu
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](https://github.com/hashicorp/terraform) | >= 1.0 |
-| <a name="requirement_azurerm"></a> [azurerm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs) | >= 3.0 |
+| <a name="requirement_azurerm"></a> [azurerm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs) | >= 4.4.0 |
 | <a name="requirement_random"></a> [random](https://registry.terraform.io/providers/hashicorp/random/latest/docs) | >= 3.0 |
 
 ## Usage
@@ -18,7 +18,7 @@ To use this module and create a Azure VNET configured for XC Cloud Azure VNET Si
 ```hcl
 module "azure_vnet" {
   source  = "f5devcentral/azure-vnet-site-networking/volterra"
-  version = "0.0.1"
+  version = "0.0.3"
 
   resource_group_name = "azure_terraform_demo"
   location = var.azure_rg_location

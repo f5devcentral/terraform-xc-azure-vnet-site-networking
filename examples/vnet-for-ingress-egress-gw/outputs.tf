@@ -38,16 +38,6 @@ output "local_subnet_ids" {
   description = "The IDs of the local subnets."
 }
 
-output "outside_route_table_id" {
-  value       = module.azure_vnet.outside_route_table_id
-  description = "The ID of the outside route table."
-}
-
-output "outside_route_table_name" {
-  value       = module.azure_vnet.outside_route_table_name
-  description = "The name of the outside route table."
-}
-
 output "outside_security_group_name" {
   value       = module.azure_vnet.outside_security_group_name
   description = "The Name of the outside security group."
