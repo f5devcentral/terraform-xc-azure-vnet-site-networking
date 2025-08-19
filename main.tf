@@ -6,102 +6,18 @@ resource "random_string" "random" {
 }
 
 locals {
-  create_outside_subnet     = local.outside_subnets_len > 0
-  create_local_subnet       = local.local_subnets_len > 0
-  create_inside_subnet      = local.inside_subnets_len > 0
-  outside_subnets_len       = length(var.outside_subnets)
-  local_subnets_len         = length(var.local_subnets)
-  inside_subnets_len        = length(var.inside_subnets)
-  resource_group_name       = var.resource_group_name
-  create_resource_group     = var.create_resource_group
-  vnet_name                 = var.name != null ? var.name : format("%s-vnet", random_string.random.result)
-  vnet_id                   = var.create_vnet ? azurerm_virtual_network.this[0].id : data.azurerm_virtual_network.this[0].id
-  vnet_cidr                 = var.create_vnet ? tolist(azurerm_virtual_network.this[0].address_space)[0] : tolist(data.azurerm_virtual_network.this[0].address_space)[0]
-  existing_vnet_name        = var.create_vnet ? azurerm_virtual_network.this[0].name : local.vnet_name
-  az_names                  = slice(["1","2","3"], 0, max(local.outside_subnets_len, local.local_subnets_len, local.inside_subnets_len))
-  americas_tcp_80_443_range = [
-    "5.182.215.0/25",
-    "84.54.61.0/25",
-    "23.158.32.0/25",
-    "84.54.62.0/25",
-    "185.94.142.0/25",
-    "185.94.143.0/25",
-    "159.60.190.0/24",
-    "159.60.168.0/24",
-    "159.60.180.0/24",
-    "159.60.174.0/24",
-    "159.60.176.0/24",
-  ]
-  europe_tcp_80_443_range = [
-    "5.182.213.0/25",
-    "5.182.212.0/25",
-    "5.182.213.128/25",
-    "5.182.214.0/25",
-    "84.54.60.0/25",
-    "185.56.154.0/25",
-    "159.60.160.0/24",
-    "159.60.162.0/24",
-    "159.60.188.0/24",
-    "159.60.182.0/24",
-    "159.60.178.0/24",
-  ]
-  asia_tcp_80_443_range = [
-    "103.135.56.0/25",
-    "103.135.57.0/25",
-    "103.135.56.128/25",
-    "103.135.59.0/25",
-    "103.135.58.128/25",
-    "103.135.58.0/25",
-    "159.60.189.0/24",
-    "159.60.166.0/24",
-    "159.60.164.0/24",
-    "159.60.170.0/24",
-    "159.60.172.0/24",
-    "159.60.191.0/24",
-    "159.60.184.0/24",
-    "159.60.186.0/24",
-  ]
-  americas_udp_4500_range = [
-    "5.182.215.0/25",
-    "84.54.61.0/25",
-    "23.158.32.0/25",
-    "84.54.62.0/25",
-    "185.94.142.0/25",
-    "185.94.143.0/25",
-    "159.60.190.0/24",
-    "159.60.168.0/24",
-    "159.60.180.0/24",
-    "159.60.174.0/24",
-    "159.60.176.0/24",
-  ]
-  europe_udp_4500_range = [
-    "5.182.213.0/25",
-    "5.182.212.0/25",
-    "5.182.213.128/25",
-    "5.182.214.0/25",
-    "84.54.60.0/25",
-    "185.56.154.0/25",
-    "159.60.160.0/24",
-    "159.60.162.0/24",
-    "159.60.188.0/24",
-    "159.60.182.0/24",
-    "159.60.178.0/24",
-  ]
-  asia_udp_4500_range = [
-    "103.135.56.0/25",
-    "103.135.57.0/25",
-    "103.135.56.128/25",
-    "103.135.59.0/25",
-    "103.135.58.128/25",
-    "103.135.58.0/25",
-    "159.60.189.0/24",
-    "159.60.166.0/24",
-    "159.60.164.0/24",
-    "159.60.170.0/24",
-    "159.60.172.0/24",
-    "159.60.184.0/24",
-    "159.60.186.0/24",
-  ]
+  create_outside_subnet = local.outside_subnets_len > 0
+  create_local_subnet   = local.local_subnets_len > 0
+  create_inside_subnet  = local.inside_subnets_len > 0
+  outside_subnets_len   = length(var.outside_subnets)
+  local_subnets_len     = length(var.local_subnets)
+  inside_subnets_len    = length(var.inside_subnets)
+  resource_group_name   = var.resource_group_name
+  vnet_name             = var.name != null ? var.name : format("%s-vnet", random_string.random.result)
+  vnet_id               = var.create_vnet ? azurerm_virtual_network.this[0].id : data.azurerm_virtual_network.this[0].id
+  vnet_cidr             = var.create_vnet ? tolist(azurerm_virtual_network.this[0].address_space)[0] : tolist(data.azurerm_virtual_network.this[0].address_space)[0]
+  existing_vnet_name    = var.create_vnet ? azurerm_virtual_network.this[0].name : local.vnet_name
+  az_names              = slice(["1", "2", "3"], 0, max(local.outside_subnets_len, local.local_subnets_len, local.inside_subnets_len))
 }
 
 resource "azurerm_resource_group" "this" {
@@ -121,17 +37,17 @@ data "azurerm_virtual_network" "this" {
 resource "azurerm_virtual_network" "this" {
   count = var.create_vnet ? 1 : 0
 
-  name                = local.vnet_name
-  address_space       = [var.vnet_cidr]
+  name          = local.vnet_name
+  address_space = [var.vnet_cidr]
 
   location            = var.location
   resource_group_name = local.resource_group_name
 
   tags = var.tags
 
-  depends_on = [ 
+  depends_on = [
     azurerm_resource_group.this
-   ]
+  ]
 }
 
 resource "azurerm_subnet" "local" {
@@ -142,7 +58,7 @@ resource "azurerm_subnet" "local" {
   virtual_network_name = local.existing_vnet_name
   address_prefixes     = [element(var.local_subnets, count.index)]
 
-  depends_on = [ 
+  depends_on = [
     azurerm_virtual_network.this
   ]
 }
@@ -155,7 +71,7 @@ resource "azurerm_subnet" "outside" {
   virtual_network_name = local.existing_vnet_name
   address_prefixes     = [element(var.outside_subnets, count.index)]
 
-  depends_on = [ 
+  depends_on = [
     azurerm_virtual_network.this
   ]
 }
@@ -168,7 +84,7 @@ resource "azurerm_subnet" "inside" {
   virtual_network_name = local.existing_vnet_name
   address_prefixes     = [element(var.inside_subnets, count.index)]
 
-  depends_on = [ 
+  depends_on = [
     azurerm_virtual_network.this
   ]
 }
@@ -182,7 +98,7 @@ resource "azurerm_network_security_group" "outside" {
 
   tags = var.tags
 
-  depends_on = [ 
+  depends_on = [
     azurerm_resource_group.this,
     azurerm_virtual_network.this
   ]
@@ -198,7 +114,7 @@ module "outside_nsg_rules" {
   outside_subnets             = var.outside_subnets
   local_subnets               = var.local_subnets
 
-  depends_on = [ 
+  depends_on = [
     azurerm_resource_group.this,
     azurerm_network_security_group.outside
   ]
@@ -210,10 +126,10 @@ resource "azurerm_network_security_group" "inside" {
   name                = format("%s-inside-nsg", local.vnet_name)
   location            = var.location
   resource_group_name = local.resource_group_name
-  
+
   tags = var.tags
 
-  depends_on = [ 
+  depends_on = [
     azurerm_virtual_network.this
   ]
 }
@@ -249,7 +165,7 @@ resource "azurerm_route_table" "inside" {
 
   tags = var.tags
 
-  depends_on = [ 
+  depends_on = [
     azurerm_virtual_network.this
   ]
 }
