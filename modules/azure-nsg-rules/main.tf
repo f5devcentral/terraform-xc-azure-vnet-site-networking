@@ -1,8 +1,3 @@
-data "azurerm_network_security_group" "this" {
-  name                = var.network_security_group_name
-  resource_group_name = var.resource_group_name
-}
-
 locals {
   americas_tcp_80_443_range = [
     "5.182.215.0/25",

@@ -18,6 +18,11 @@ locals {
   vnet_cidr             = var.create_vnet ? tolist(azurerm_virtual_network.this[0].address_space)[0] : tolist(data.azurerm_virtual_network.this[0].address_space)[0]
   existing_vnet_name    = var.create_vnet ? azurerm_virtual_network.this[0].name : local.vnet_name
   az_names              = slice(["1", "2", "3"], 0, max(local.outside_subnets_len, local.local_subnets_len, local.inside_subnets_len))
+
+  common_tags = merge(var.tags, {
+    Name        = local.vnet_name
+    Environment = lookup(var.tags, "Environment", "dev")
+  })
 }
 
 resource "azurerm_resource_group" "this" {
@@ -25,6 +30,12 @@ resource "azurerm_resource_group" "this" {
 
   name     = local.resource_group_name
   location = var.location
+
+  tags = local.common_tags
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 data "azurerm_virtual_network" "this" {
@@ -43,7 +54,11 @@ resource "azurerm_virtual_network" "this" {
   location            = var.location
   resource_group_name = local.resource_group_name
 
-  tags = var.tags
+  tags = local.common_tags
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 
   depends_on = [
     azurerm_resource_group.this
@@ -96,7 +111,11 @@ resource "azurerm_network_security_group" "outside" {
   location            = var.location
   resource_group_name = local.resource_group_name
 
-  tags = var.tags
+  tags = local.common_tags
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 
   depends_on = [
     azurerm_resource_group.this,
@@ -127,7 +146,11 @@ resource "azurerm_network_security_group" "inside" {
   location            = var.location
   resource_group_name = local.resource_group_name
 
-  tags = var.tags
+  tags = local.common_tags
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 
   depends_on = [
     azurerm_virtual_network.this
@@ -163,7 +186,11 @@ resource "azurerm_route_table" "inside" {
   resource_group_name           = local.resource_group_name
   bgp_route_propagation_enabled = var.bgp_route_propagation_enabled
 
-  tags = var.tags
+  tags = local.common_tags
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 
   depends_on = [
     azurerm_virtual_network.this
