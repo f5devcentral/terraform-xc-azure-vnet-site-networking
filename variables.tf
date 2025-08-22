@@ -7,13 +7,13 @@ variable "name" {
 variable "location" {
   description = "The location/region where the VNET will be created. Changing this forces a new resource to be created."
   type        = string
-  nullable = false
+  nullable    = false
 }
 
 variable "resource_group_name" {
   description = "The name of the resource group in which to create the VNET. Changing this forces a new resource to be created."
-  type     = string
-  nullable = false
+  type        = string
+  nullable    = false
 }
 
 variable "create_vnet" {
@@ -24,12 +24,6 @@ variable "create_vnet" {
 
 variable "create_resource_group" {
   description = "Whether to create a new resource group for the VNET. Changing this forces a new resource to be created."
-  type        = bool
-  default     = true
-}
-
-variable "create_outside_route_table" {
-  description = "Whether to create an outside route table for the outside or local subnets."
   type        = bool
   default     = true
 }
@@ -48,12 +42,6 @@ variable "create_inside_route_table" {
 
 variable "create_inside_security_group" {
   description = "Whether to create an inside security group."
-  type        = bool
-  default     = true
-}
-
-variable "create_udp_security_group_rules" {
-  description = "Whether to create UDP security group rules."
   type        = bool
   default     = true
 }

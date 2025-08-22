@@ -11,9 +11,9 @@ module "azure_vnet" {
   source = "../.."
 
   create_resource_group = false
-  resource_group_name = "azure_terraform_demo"
-  location            = var.azure_rg_location
-  vnet_cidr           = "192.168.0.0/16"
-  outside_subnets     = ["192.168.11.0/24", "192.168.12.0/24", "192.168.13.0/24"]
-  inside_subnets      = ["192.168.21.0/24", "192.168.22.0/24", "192.168.23.0/24"]
+  resource_group_name   = "azure_terraform_demo"
+  location              = var.azure_rg_location
+  vnet_cidr             = "192.168.0.0/16"
+  outside_subnets       = ["192.168.11.0/24", "192.168.12.0/24", "192.168.13.0/24"]
+  inside_subnets        = ["192.168.21.0/24", "192.168.22.0/24", "192.168.23.0/24"]
 }
